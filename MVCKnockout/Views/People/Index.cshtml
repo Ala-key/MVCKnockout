@@ -1,0 +1,18 @@
+﻿@model List<People>
+
+
+
+<div>
+    @foreach(var person in Model)
+    {
+        <div>
+            <div>@person.Email</div>
+            <div>@person.Password</div>
+        </div>
+    }
+    <form asp-action="Create" asp-controller="People" method="get">
+        <button>Добавить нового человека</button>
+    </form>
+
+
+</div>

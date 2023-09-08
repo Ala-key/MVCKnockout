@@ -1,0 +1,73 @@
+﻿@model People
+
+@{
+    ViewData["Title"] = "Peoples";
+}
+
+
+
+<div id="form-validate">
+    <div>
+        <label>Email</label>
+        <input data-bind="textInput: email">
+    </div>
+    <div>
+        <label>Password</label>
+        <input data-bind="textInput: password">
+    </div>
+    <button data-bind="click: validateClick">Создать</button>
+
+
+    <script src="~/js/knockout.js"></script>
+
+    <script>
+        var ViewModel = function () {
+            var self = this;
+            self.email = ko.observable('');
+            self.password = ko.observable('');
+
+            self.validateClick = function () {
+                console.log(self.email());
+                console.log(self.password());
+                var isValid = true;
+
+                if (self.email() === '') {
+                    isValid = false;
+                }
+
+                if (self.password() === '') {
+                    isValid = false;
+                }
+
+
+                var person = {
+                    Email: self.email(),
+                    Password: self.password(),
+                    id: 0
+                }
+
+
+                console.log(person);
+
+                if (isValid) {
+                    fetch("/People/Create", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json" // Указываем, что отправляем JSON
+                        },
+                        body: JSON.stringify(person) // Convert the object to JSON
+                    })
+                        .catch(error => {
+                            console.error("Ошибка при отправке запроса:", error);
+                        });
+                }
+            }
+
+        }
+
+        var viewModelInstance = new ViewModel();
+        ko.applyBindings(viewModelInstance);
+    </script>
+</div>
+
+
